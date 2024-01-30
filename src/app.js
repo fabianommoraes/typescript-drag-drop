@@ -1,4 +1,3 @@
-// Project State Management
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,6 +7,22 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+// Project Type
+var ProjectStatus;
+(function (ProjectStatus) {
+    ProjectStatus[ProjectStatus["Active"] = 0] = "Active";
+    ProjectStatus[ProjectStatus["Finished"] = 1] = "Finished";
+})(ProjectStatus || (ProjectStatus = {}));
+var Project = /** @class */ (function () {
+    function Project(id, title, description, people, status) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.people = people;
+        this.status = status;
+    }
+    return Project;
+}());
 var ProjectState = /** @class */ (function () {
     function ProjectState() {
         this.listeners = [];
@@ -24,12 +39,7 @@ var ProjectState = /** @class */ (function () {
         this.listeners.push(listenerFn);
     };
     ProjectState.prototype.addProject = function (title, description, numOfPeople) {
-        var newProject = {
-            id: Math.random().toString(),
-            title: title,
-            description: description,
-            people: numOfPeople
-        };
+        var newProject = new Project(Math.random().toString(), title, description, numOfPeople, ProjectStatus.Active);
         this.projects.push(newProject);
         for (var _i = 0, _a = this.listeners; _i < _a.length; _i++) {
             var listenerFn = _a[_i];
@@ -88,7 +98,13 @@ var ProjectList = /** @class */ (function () {
         this.element = importedNode.firstElementChild;
         this.element.id = "".concat(this.type, "-projects");
         projectState.addListener(function (projects) {
-            _this.assignedProjects = projects;
+            var relevantProjects = projects.filter(function (prj) {
+                if (_this.type === 'active') {
+                    return prj.status === ProjectStatus.Active;
+                }
+                return prj.status === ProjectStatus.Finished;
+            });
+            _this.assignedProjects = relevantProjects;
             _this.renderProjects();
         });
         this.attach();
@@ -96,6 +112,7 @@ var ProjectList = /** @class */ (function () {
     }
     ProjectList.prototype.renderProjects = function () {
         var listEl = document.getElementById("".concat(this.type, "-projects-list"));
+        listEl.innerHTML = '';
         for (var _i = 0, _a = this.assignedProjects; _i < _a.length; _i++) {
             var prjItem = _a[_i];
             var listItem = document.createElement('li');
