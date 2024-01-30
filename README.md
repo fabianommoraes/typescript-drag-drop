@@ -1,4 +1,4 @@
-# Next.js Complete Fullstack App
+# Drag and Drop Typescript/OOP project
 
 How to run locally:
 
