@@ -13,11 +13,14 @@
   ],
   "author": "Maximilian Schwarzmüller",
   "license": "ISC",
-  "devDependencies": {
-    "@typescript-eslint/parser": "^5.62.0",
+  "dependencies": {
+    "@typescript-eslint/parser": "^6.20.0",
     "eslint": "^8.56.0",
-    "lite-server": "^2.5.4",
-    "prettier": "^2.8.8",
-    "typescript": "^4.9.5"
+    "lite-server": "^2.6.1",
+    "prettier": "^3.2.4",
+    "typescript": "^5.3.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.7"
   }
 }
